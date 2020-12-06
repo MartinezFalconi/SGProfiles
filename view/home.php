@@ -12,11 +12,15 @@
 </head>
 
 <body>
+<!-- Control de sesion iniciada -->
+<?php
+    require_once '../controller/sessionController.php';
+?>
     <!-- The Navbar -->
     <ul>
         <li><a href="./home.html">@username</a></li>
         <li><a href="#" onclick="openModal()">+</a></li>
-        <li><a href="#">logout</a></li>
+        <li><a href="../controller/logoutController.php">Cerrar sesion</a></li>
     </ul>
 
     <!-- The Modal -->
@@ -29,7 +33,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <form action="../controller/postController.php" method="POST" enctype="multipart/form-data">
+                    <form action="../model/postDAO.php" method="POST" enctype="multipart/form-data">
                         <input type="text" id="title" name="title" placeholder="Título de la foto...">
                         <input type="file" id="img" name="img">
                         <input type="submit" value="Subir">

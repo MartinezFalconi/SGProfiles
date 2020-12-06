@@ -1,5 +1,5 @@
 <?php
-require_once "../model/connection.php";
+require_once "../services/connection.php";
 $title = $_REQUEST['title'];
 $path = 'public/'.$_FILES['img']['name'];
 
