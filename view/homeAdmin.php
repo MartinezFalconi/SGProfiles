@@ -16,15 +16,19 @@
 <!-- Control de sesion iniciada -->
 <?php
     require_once '../controller/sessionController.php';
+    if ($_SESSION['user']->getProfile() != 3) {
+        header('Location: ./home.php');
+    }
 ?>
     <!-- The Navbar -->
     <ul>
+        <li class="liAdmin"><a href="./userSettings.php"><i class="fas fa-users-cog"></i></a></li>
         <?php
         require_once '../controller/sessionController.php';
-        echo "<li><a href='./home.php'><i class='fas fa-house-user'></i> ".$_SESSION['user']->getName()."</a></li>";
+        echo "<li class='liAdmin'><a href='./homeAdmin.php'><i class='fas fa-house-user'></i> ".$_SESSION['user']->getName()."</a></li>";
         ?>
-        <li><a href="#" onclick="openModal()"><i class="fas fa-plus"></i></a></li>
-        <li><a href="../controller/logoutController.php"><i class="fas fa-sign-out-alt"></i></a></li>
+        <li class="liAdmin"><a href="#" onclick="openModal()"><i class="fas fa-plus"></i></a></li>
+        <li class="liAdmin"><a href="../controller/logoutController.php"><i class="fas fa-sign-out-alt"></i></a></li>
     </ul>
 
     <!--Galería-->

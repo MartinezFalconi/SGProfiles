@@ -21,12 +21,12 @@ class postDAO {
                     $sentencia->bindValue(3,$_SESSION['user']->getId());
                 $sentencia->execute();
                 $this->pdo->commit();
-                echo "La imagen ha sido publicada.";
+                //alert("La imagen ha sido publicada.");
             }
         } catch (Exception $e) {
             $this->pdo->rollBack();
             echo $e;
-            echo "La imagen no ha sido publicada.";
+            //alert("La imagen no ha sido publicada.");
         }
     }
 

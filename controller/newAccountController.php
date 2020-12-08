@@ -8,6 +8,7 @@
         $userDAO->create($user);
         header('Location:../view/login.php');
     }else{
-        header('Location:../view/login.php');
+        header('Location:../newAccount.php');
+        return false;
     }
 ?>
