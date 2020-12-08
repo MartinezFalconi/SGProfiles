@@ -10,9 +10,9 @@
 <body>
 
 <div class="wrapper">
-    <form action="./newAccount.php" method="POST" onsubmit="return validacionCreate()">
+    <form action="../controller/newAccountController.php" method="POST" onsubmit="return validacionCreate()">
     <div class="title">
-        Rellene el formulario para registrarse.
+        Rellene el formulario de registro.
     </div>
     <div class="form">
         <div class="inputfield">
@@ -51,15 +51,5 @@
     </form>
 </div>	
 
-<?php
-    if (isset($_REQUEST['name'])) {
-        require_once '../model/user.php';
-        require_once '../model/userDAO.php';
-        $user = new user($_REQUEST['email'], $_REQUEST['pass']);
-        $user->setName($_REQUEST['name']);
-        $userDAO = new userDAO;
-        $userDAO->create($user);
-    }
-?>
 </body>
 </html>

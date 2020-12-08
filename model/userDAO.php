@@ -9,9 +9,9 @@ class userDAO {
         $this->pdo=$pdo;
     }
 
-    public function login($user){
+    public function login($user) {
         $query = "SELECT * FROM `users` WHERE `email` = ? AND `password` = ?";
-            $sentencia=$this->pdo->prepare($query);
+        $sentencia=$this->pdo->prepare($query);
         $email = $user->getEmail();
         $pass = $user->getPassword();
             $sentencia->bindParam(1,$email);
@@ -21,6 +21,7 @@ class userDAO {
         $numRow = $sentencia->rowCount();
         if(!empty($numRow) && $numRow==1){
             $user->setId($result['id']);
+            $user->setName($result['name']);
             session_start();
             $_SESSION['user'] = $user;
             return true;
@@ -36,7 +37,6 @@ class userDAO {
                 $sentencia=$this->pdo->prepare($query);
                 $sentencia->bindValue(1,$user->getEmail());
             $sentencia->execute();
-            $this->pdo->commit();
             $result = $sentencia->fetch(PDO::FETCH_ASSOC);
             $numRow = $sentencia->rowCount();
             if(!empty($numRow) && $numRow==1){
@@ -48,9 +48,9 @@ class userDAO {
                     $sentencia->bindValue(2,$user->getEmail());
                     $sentencia->bindValue(3,$user->getPassword());
                 $sentencia->execute();
-                $this->pdo->commit();
                 echo "Has sido inscrito";
             }
+            $this->pdo->commit();
         } catch (Exception $e) {
             $this->pdo->rollBack();
             echo $e;

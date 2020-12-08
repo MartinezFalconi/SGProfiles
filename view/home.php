@@ -18,10 +18,23 @@
 ?>
     <!-- The Navbar -->
     <ul>
-        <li><a href="./home.html">@username</a></li>
+        <?php
+        require_once '../controller/sessionController.php';
+        echo "<li><a href='./home.php'>".$_SESSION['user']->getName()."</a></li>";
+        ?>
         <li><a href="#" onclick="openModal()">+</a></li>
         <li><a href="../controller/logoutController.php">Cerrar sesion</a></li>
     </ul>
+
+    <!--Galería-->
+
+    <div class="row padding-20"></div>
+        <?php
+        require_once '../model/postDAO.php';
+        $postDAO = new postDAO();
+        $postDAO->viewImages();
+        ?>
+    <div class="row padding-lat">
 
     <!-- The Modal -->
     <div id="myModal" class="modal">
@@ -33,22 +46,17 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <form action="../model/postDAO.php" method="POST" enctype="multipart/form-data">
+                    <form action="../controller/postController.php" method="POST" enctype="multipart/form-data">
                         <input type="text" id="title" name="title" placeholder="Título de la foto...">
-                        <input type="file" id="img" name="img">
+                        <input type="file" id="img" name="img" accept="image/gif, image/jpeg, image/jpg, image/png">
+                        <p>Solamente se aceptan imagenes en formato: png, jpg, jpeg, gif.</p>
                         <input type="submit" value="Subir">
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="three-column">
-            <img src="../public/706053.jpg"></img>
-        </div>
-    </div>
-
+   
 </body>
 
 </html>

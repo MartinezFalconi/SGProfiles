@@ -93,7 +93,11 @@ li a:hover {
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+}
+
+.modal-content p {
+    font-size: 9px;
 }
 
 
@@ -188,6 +192,18 @@ input[type=submit]:hover {
 
 /* Clases de columnas */
 
+.one-column {
+    float: left;
+    width: 100%;
+    padding: 5px;
+}
+
+.two-column {
+    float: left;
+    width: 50%;
+    padding: 5px;
+}
+
 .three-column {
     float: left;
     width: 33.33%;
@@ -195,7 +211,104 @@ input[type=submit]:hover {
 }
 
 .three-column img {
+    width: 100%
+}
+
+.one-column h1 {
+    text-align: center;
+}
+
+.padding-20 {
+    padding: 20px;
+}
+
+#section-2 {
+    background-color: greenyellow;
+}
+
+.padding-lat {
+    padding: 0 10%;
+}
+
+@media only screen and (max-width: 700px) {
+    .three-column {
+        width: 50%;
+    }
+    .two-column {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-device-width: 700px) {
+    .three-column {
+        width: 100%;
+    }
+}
+
+
+/* Cuadricula imagenes */
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 1em;
+    margin: 20px 20px;
+}
+
+.xgrid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 1em;
+    margin: 20px 20px;
+}
+
+.grid-container img {
     width: 100%;
+    max-width: 400px;
+    height: auto;
+    display: block;
+    margin: auto;
+    border: solid 2px greenyellow;
+}
+
+.xgrid-container img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    display: block;
+    margin: auto;
+    border: solid 2px orange;
+}
+
+.xgrid-container img:hover,
+.grid-container img:hover {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    display: block;
+    margin: auto;
+    border: solid 3px rgb(55, 159, 245);
+}
+
+.grid-container h4,
+.xgrid-container h4 {
+    color: white;
+    font-size: 12px;
+    text-align: center;
+    font-family: cursive;
+    text-shadow: rgb(160, 14, 245) 0.1em 0.1em 0.2em
+}
+
+.spanFoto {
+    line-height: normal;
+    font-size: 11px;
+    display: table-caption;
+    margin: 0;
+    background: #646464;
+    color: white;
+    font-style: italic;
+    padding: 5px;
+    text-align: center;
 }
 
 
