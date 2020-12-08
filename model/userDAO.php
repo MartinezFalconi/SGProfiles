@@ -23,6 +23,7 @@ class userDAO {
             $user->setId($result['id']);
             $user->setName($result['name']);
             $user->setProfile($result['profile']);
+            $user->setStatus($result['status']);
             session_start();
             $_SESSION['user'] = $user;
             return true;

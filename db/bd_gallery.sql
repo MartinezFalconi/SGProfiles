@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-12-2020 a las 01:48:42
+-- Tiempo de generación: 08-12-2020 a las 22:09:50
 -- Versión del servidor: 10.4.11-MariaDB
 -- Versión de PHP: 7.4.1
 
@@ -42,17 +42,10 @@ CREATE TABLE `posts` (
 --
 
 INSERT INTO `posts` (`id`, `title`, `path`, `user`) VALUES
-(31, 'Mi coche', 'public/COHE_CONPIXEL.jpg', 1),
-(32, 'Mi coche2', 'public/176279.jpg', 1),
-(33, 'Mi coche2', 'public/176279.jpg', 1),
-(34, 'test', 'public/10613.jpg', 1),
-(35, 'x', 'public/768f9b48dc75a7e5c517f72f76a67eb0.jpg', 1),
-(36, 'x', 'public/768f9b48dc75a7e5c517f72f76a67eb0.jpg', 1),
-(37, 'xasf', 'public/29450.jpg', 1),
-(38, '16546', 'public/02edab00ad52f6c5cebed3c16f4ff462.png', 1),
-(39, 'NUEVITA', 'public/ITALIA_!.JPG', 1),
-(40, 'fotoPaula', 'public/47-473124_airplane-wallpaper-4k.jpg', 11),
-(41, 'test', 'public/5K_Wallpaper_of_Purge_LED_Mask.jpg', 1);
+(53, 'AVION', 'public/3037474', 1),
+(54, 'OFF-WHITE', 'public/885724209', 1),
+(55, 'CAR', 'public/87871910', 1),
+(56, 'Supreme', 'public/920374478', 11);
 
 -- --------------------------------------------------------
 
@@ -96,7 +89,8 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `status`, `profile`) VALUES
 (1, 'Sergio', 'smartinez@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 1, 3),
 (2, 'Marco', 'mverdejo@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 1, 1),
-(11, 'Paula', 'psaez@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 1, 1);
+(11, 'Paula', 'psaez@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 1, 1),
+(27, 'Toni', 'thernandez@gmail.com', '81dc9bdb52d04dc20036dbd8313ed055', 0, 1);
 
 --
 -- Índices para tablas volcadas
@@ -130,7 +124,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT de la tabla `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT de la tabla `profiles`
@@ -142,7 +136,7 @@ ALTER TABLE `profiles`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- Restricciones para tablas volcadas
