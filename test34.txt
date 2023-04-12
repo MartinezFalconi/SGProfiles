@@ -1,0 +1,632 @@
+//Textos
+let texto_1 = "     // Declaración de variables";
+let texto_2 = "         // Declaramos el valor de X, Y, color y diámetro del círculo";
+let texto_3 = "         // Se trata de números aleatorios";
+let texto_4 = "Introduce anchura (entre 0 y 550): ";
+
+//variables posición texto virtual
+
+let x_sangria = 10;//posición de sangría
+let y_height;//posición en y del texto
+let y_increment = 20;//incremento entre líneas
+let num_line = 1;//número de linea (en qué línea estamos)
+
+//Variables relativas a los cuadros interactivos
+
+let x_primero = 102;//posicion en x del primer cuadro
+let x_long_primero = 27;//longitud en x del primer cuadro
+let y_primero = 6;//posicion en y del primer cuadro
+let y_primero_def;//nos dice dónde se ha quedado y_primero cuando se ha usado
+let y_long_primero = 16;//longitud en y del primer cuadro
+let x_segundo = 133;//posicion en x del segundo cuadro
+let x_long_segundo = 26;
+let y_segundo = 6;
+let y_segundo_def;
+let y_long_segundo = 16;
+let x_tercero = 148;//posicion en x del tercer cuadro
+let x_long_tercero = 18;
+let y_tercero = 6;
+let y_tercero_def;
+let y_long_tercero = 16;
+let x_cuarto = 225;//posicion en x del cuarto cuadro
+let x_long_cuarto = 9;
+let y_cuarto = 6;
+let y_cuarto_def;
+let y_long_cuarto = 16;
+let x_quinto = 245;//posicion en x del quinto cuadro
+let x_long_quinto = 26;
+let y_quinto = 6;
+let y_quinto_def;
+let y_long_quinto = 16;
+let x_sexto = 225;//posicion en x del sexto cuadro
+let x_long_sexto = 9;
+let y_sexto = 6;
+let y_sexto_def;
+let y_long_sexto = 16;
+let x_septimo = 245;//posicion en x del septimo cuadro
+let x_long_septimo = 26;
+let y_septimo = 6;
+let y_septimo_def;
+let y_long_septimo = 16;
+let x_octavo = 215;//posicion en x del octavo cuadro
+let x_long_octavo = 9;
+let y_octavo = 6;
+let y_octavo_def;
+let y_long_octavo = 16;
+let x_noveno = 245;//posicion en x del noveno cuadro
+let x_long_noveno = 26;
+let y_noveno = 6;
+let y_noveno_def;
+let y_long_noveno = 16;
+let x_sq_1 = 65;//posicion en x del primer cuadrado
+let x_long_sq_1 = 130;
+let y_sq_1 = 6;
+let y_long_sq_1 = 40;
+let inc = 0;//variable para saber cuantos incrementos hemos hecho
+
+//Variables de funcionamiento del programa
+
+let paint_background = false;//booleano para saber si hemos seleccionado que se pinte el background o no
+let boton_1_ON;//Indica que hemos apretado el botón 1
+let boton_2_ON;//Indica que hemos apretado el botón 2
+let boton_3_ON;
+let boton_4_ON;
+let boton_5_ON;
+let boton_6_ON;
+let boton_7_ON;
+let boton_8_ON;
+let boton_9_ON;
+let flanco_botonera = 0;//para que las botoneras solo cuenten una vez
+let div_frameRate;//Nos permite simular un cambio del frameRate
+let iteraciones = 0;//Cuenta cuántas iteraciones llevamos en el draw
+let valor_prev_width;//valor previo de la anchura virtual. Para saber si ha variado
+let valor_prev_height;//Valor previo de la altura virtual. Para saber si ha variado
+let activar_lineas = false;//para activar/desactivar lineas
+let linea = 0;//Para saber en qué línea estamos
+let num_lineas = 26;//número de lineas (total)
+let lineas_activadas = [num_lineas];
+let clean_error = false;//Sirve para limpiar la señal de error
+let botonPrint; //Botón de Print
+let num_lienzo = 1;//Número de lienzo impreso
+
+//variables modificables
+let virtual_width = 550;//anchura virtual de la ventana que ve el estudiante (mitad derecha)
+let virtual_height = 700;//altura virtual de la ventana que ve el estudiante (mitad derecha)
+let pos_mini_X = 0;//posicion mínima del centro del círculo en X
+let pos_maxi_X = virtual_width;//posicion máxima del centro del círculo en X
+let pos_mini_Y = 0;//posicion mínima del centro del círculo en Y
+let pos_maxi_Y = virtual_height;//posicion máxima del centro del círculo en Y
+let diam_mini = 0;//diámetro mínimo del círculo
+let diam_maxi = 100;//diámetro máximo del círculo
+let position_X;//posición en X del centro del círculo
+let position_Y;//posición en Y del centro del círculo
+let diameter;//diámetro del círculo
+let virtual_frameRate = 60;//frameRate virtual
+
+
+function setup() {
+  createCanvas(1100, 700);
+  botonPrint = createButton('Print');
+  botonPrint.position(width/2-60, 10);
+  //frameRate(10);
+  //Inicializamos lineas_activadas
+  for(let i=0;i<num_lineas;i++) lineas_activadas[i]=true;
+}
+
+function draw() {
+  
+  //Impresión del lienzo
+  botonPrint.mousePressed(() => {
+      saveCanvas('Lienzo_'+num_lienzo+'_Ejercicio_Circulos_PEC', 'jpg');
+      num_lienzo++;
+      }
+  );
+  
+  //Inicializaciones
+  
+  iteraciones++;
+  if (iteraciones > 100000) iteraciones = 0;
+  if (boton_1_ON == false) flanco_botonera = 0;
+  valor_prev_width = virtual_width;
+  valor_prev_height = virtual_height;
+  
+  //Evita que los elementos del texto virtual vayan bajando a cada iteracion, así como situa los cuadrados en el lugar adecuado y de la anchura correcta
+  y_height = 20;
+  y_primero = 6;
+  x_long_primero = longitudes(virtual_width);
+  x_segundo = x_primero + x_long_primero + 4; 
+  y_segundo = 6;
+  x_long_segundo = longitudes(virtual_height);
+  num_line = 1;
+  y_tercero = 6;
+  x_long_tercero = longitudes(virtual_frameRate);
+  y_cuarto = 6;
+  x_long_cuarto = longitudes(pos_mini_X);
+  //if (pos_mini_X > 9) x_long_cuarto = 18;
+  //if (pos_mini_X > 99) x_long_cuarto = 37;
+  x_quinto = x_cuarto + x_long_cuarto + 4;
+  y_quinto = 6;
+  x_long_quinto = longitudes(pos_maxi_X);
+  y_sexto = 6;
+  x_long_sexto = longitudes(pos_mini_Y);
+  x_septimo = x_sexto + x_long_sexto + 4;
+  y_septimo = 6;
+  x_long_septimo = longitudes(pos_maxi_Y);
+  y_octavo = 6;
+  x_long_octavo = longitudes(diam_mini);
+  x_noveno = x_octavo + x_long_octavo + 4;
+  y_noveno = 6;
+  x_long_noveno = longitudes(diam_maxi);
+  y_sq_1 = 6;
+  
+  //Creamos una división de la pantalla para ver lo que estamos programando
+  stroke(0);
+  strokeWeight(5);
+  fill(255);
+  rect(0, 0, width/2, height);
+  
+   //Activar/desactivar líneas de código
+  if (mouseIsPressed && (mouseX < width/2)){
+      linea = int(mouseY / y_increment) + 1;//calcula la linea de codigo pinchada
+      activar_lineas = true;//Nos permite activar/desactivar la linea
+  } 
+  
+  if (activar_lineas == true){
+    noStroke();
+    fill(200, 200, 200, 100);
+    rect(0, (linea-1)*(y_increment)+5, width/2-1, y_increment);
+    if (keyIsPressed && (key == 'w')) lineas_activadas[linea-1] = true;
+    if (keyIsPressed && (key == 's')) lineas_activadas[linea-1] = false;
+    print(lineas_activadas[linea-1]);
+  }
+  
+  stroke(0);
+  fill(255);
+  
+  //Escribimos el texto que queremos ver en la pantalla de la izquierda
+  textSize(16);
+  stroke(0);
+  strokeWeight(0);
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(" " + num_line + texto_1, x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(" " + num_line + "     float position_X;", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(" " + num_line + "     float position_Y;", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(" " + num_line + "     float diameter;", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(" " + num_line + "     int total_circles;", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(" " + num_line, x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(" "+ num_line +"     void setup(){ // El setup() se repite sólo una vez", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(" "+ num_line +"          // Tamaño (en píxels) del lienzo", x_sangria, y_height);
+  incrementos();
+  strokeWeight(1);
+  stroke(200);
+  fill(200);
+  rect(x_primero, y_primero, x_long_primero, y_long_primero);
+  y_primero_def = y_primero;
+  rect(x_segundo, y_segundo, x_long_segundo, y_long_segundo);
+  y_segundo_def = y_segundo;
+  fill(0);
+  stroke(0);
+  strokeWeight(0);
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(" "+ num_line +"          size(" + virtual_width + "," + virtual_height + ")", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(" "+ num_line +"       // Velocidad de resfresco del lienzo (en veces por segundo)", x_sangria, y_height);
+  incrementos();
+  strokeWeight(1);
+  stroke(200);
+  fill(200);
+  rect(x_tercero, y_tercero, x_long_tercero, y_long_tercero);
+  y_tercero_def = y_tercero;
+  fill(0);
+  stroke(0);
+  strokeWeight(0);
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text("" + num_line + "         frameRate("+ virtual_frameRate + ");", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text("" + num_line + "     }", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text("" + num_line + "     ", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text("" + num_line + "    void draw(){ // Draw() se repite frameRate veces por segundo", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(""+ num_line +"         // Pinta el fondo", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(""+ num_line +"         background(255);", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text("" + num_line + texto_2, x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text("" + num_line + texto_3, x_sangria, y_height);
+  incrementos();
+  strokeWeight(1);
+  stroke(200);
+  fill(200);
+  rect(x_cuarto, y_cuarto, x_long_cuarto, y_long_cuarto);
+  y_cuarto_def = y_cuarto;
+  rect(x_quinto, y_quinto, x_long_quinto, y_long_quinto);
+  y_quinto_def = y_quinto;
+  fill(0);
+  stroke(0);
+  strokeWeight(0);
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text("" + num_line + "          position_X = random(" + pos_mini_X + "," + pos_maxi_X + ");", x_sangria, y_height);
+  incrementos();
+  strokeWeight(1);
+  stroke(200);
+  fill(200);
+  rect(x_sexto, y_sexto, x_long_sexto, y_long_sexto);
+  y_sexto_def = y_sexto;
+  rect(x_septimo, y_septimo, x_long_septimo, y_long_septimo);
+  y_septimo_def = y_septimo;
+  fill(0);
+  stroke(0);
+  strokeWeight(0);
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text("" + num_line + "          position_Y = random(" + pos_mini_Y + "," + pos_maxi_Y+ ");", x_sangria, y_height);
+  incrementos();
+  strokeWeight(1);
+  stroke(200);
+  fill(200);
+  rect(x_octavo, y_octavo, x_long_octavo, y_long_octavo);
+  y_octavo_def = y_octavo;
+  rect(x_noveno, y_noveno, x_long_noveno, y_long_noveno);
+  y_noveno_def = y_noveno;
+  fill(0);
+  stroke(0);
+  strokeWeight(0);
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text("" + num_line + "          diameter = random(" + diam_mini + "," + diam_maxi+ ");", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(""+ num_line +"          // Selección del color", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(""+ num_line +"          fill(random(0,255), random(0,255), random(0,255), 100);", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(""+ num_line +"          // Por último dibujamos el círculo", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(""+ num_line +"          circle(position_X, position_Y, diameter/2);", x_sangria, y_height);
+  incrementos();
+  if (lineas_activadas[num_line-1] == true) fill(0);
+  if (lineas_activadas[num_line-1] == false) fill(200);
+  text(""+ num_line +"     }", x_sangria, y_height);
+  incrementos();
+
+//Funcionamiento de los botones
+  
+  //Primer botón (size X)
+  if (mouseIsPressed && (mouseX >= x_primero) && (mouseX <= (x_primero+x_long_primero)) && (mouseY >= y_primero_def) && (mouseY <= (y_primero_def+y_long_primero))) boton_1_ON = true;//Condición botón 1 
+   
+  if (boton_1_ON) {
+    
+    boton_1_ON = botonera(x_primero, x_long_primero, y_primero_def, y_long_primero, virtual_width);
+    if (keyIsPressed === true) {
+      if ((key === 'q') && (virtual_width < (width/2))) virtual_width ++;
+      if ((key === 'a') && (virtual_width > 0)) virtual_width--;
+  }
+  }
+ 
+  //segundo botón (size Y)
+  if (mouseIsPressed && (mouseX >= x_segundo) && (mouseX <= (x_segundo+x_long_segundo)) && (mouseY >= y_segundo_def) && (mouseY <= (y_segundo_def+y_long_segundo))) boton_2_ON = true;
+  
+   
+  if (boton_2_ON) {
+    
+    boton_2_ON = botonera(x_segundo, x_long_segundo, y_segundo_def, y_long_segundo, virtual_height);
+    if (keyIsPressed === true) {
+      if ((key === 'q') && (virtual_height < height)) virtual_height++;
+      if ((key === 'a') && (virtual_height > 0)) virtual_height--;
+  }
+  }
+  
+  //tercer botón (frameRate)
+  if (mouseIsPressed && (mouseX >= x_tercero) && (mouseX <= (x_tercero+x_long_tercero)) && (mouseY >= y_tercero_def) && (mouseY <= (y_tercero_def+y_long_tercero))) boton_3_ON = true;
+  
+   
+  if (boton_3_ON) {
+    
+    boton_3_ON = botonera(x_tercero, x_long_tercero, y_tercero_def, y_long_tercero, virtual_frameRate);
+    if (keyIsPressed === true) {
+      if ((key === 'q') && (virtual_frameRate < 60)) virtual_frameRate++;
+      if ((key === 'a') && (virtual_frameRate > 0)) virtual_frameRate--;
+  }
+  }
+
+    //cuarto botón (pos_mini_X)
+  if (mouseIsPressed && (mouseX >= x_cuarto) && (mouseX <= (x_cuarto+x_long_cuarto)) && (mouseY >= y_cuarto_def) && (mouseY <= (y_cuarto_def+y_long_cuarto))) boton_4_ON = true;
+  
+   
+  if (boton_4_ON) {
+    
+    boton_4_ON = botonera(x_cuarto, x_long_cuarto, y_cuarto_def, y_long_cuarto, pos_mini_X);
+    if (keyIsPressed === true) {
+      if ((key === 'q') && (pos_mini_X < width/2)) pos_mini_X++;
+      if ((key === 'a') && (pos_mini_X > 0)) pos_mini_X--;
+  }
+  }
+
+      //quinto botón (pos_maxi_X)
+  if (mouseIsPressed && (mouseX >= x_quinto) && (mouseX <= (x_quinto+x_long_quinto)) && (mouseY >= y_quinto_def) && (mouseY <= (y_quinto_def+y_long_quinto))) boton_5_ON = true;
+  
+   
+  if (boton_5_ON) {
+    
+    boton_5_ON = botonera(x_quinto, x_long_quinto, y_quinto_def, y_long_quinto, pos_maxi_X);
+    if (keyIsPressed === true) {
+      if ((key === 'q') && (pos_maxi_X < width/2)) pos_maxi_X++;
+      if ((key === 'a') && (pos_maxi_X > 0)) pos_maxi_X--;
+  }
+  }
+  
+    //sexto botón (pos_mini_Y)
+  if (mouseIsPressed && (mouseX >= x_sexto) && (mouseX <= (x_sexto+x_long_sexto)) && (mouseY >= y_sexto_def) && (mouseY <= (y_sexto_def+y_long_sexto))) boton_6_ON = true;
+  
+   
+  if (boton_6_ON) {
+    
+    boton_6_ON = botonera(x_sexto, x_long_sexto, y_sexto_def, y_long_sexto, pos_mini_Y);
+    if (keyIsPressed === true) {
+      if ((key === 'q') && (pos_mini_Y < height)) pos_mini_Y++;
+      if ((key === 'a') && (pos_mini_Y > 0)) pos_mini_Y--;
+  }
+  }
+  
+  
+  //séptimo botón (pos_maxi_Y)
+  if (mouseIsPressed && (mouseX >= x_septimo) && (mouseX <= (x_septimo+x_long_septimo)) && (mouseY >= y_septimo_def) && (mouseY <= (y_septimo_def+y_long_septimo))) boton_7_ON = true;
+  
+   
+  if (boton_7_ON) {
+    
+    boton_7_ON = botonera(x_septimo, x_long_septimo, y_septimo_def, y_long_septimo, pos_maxi_Y);
+    if (keyIsPressed === true) {
+      if ((key === 'q') && (pos_maxi_Y < height)) pos_maxi_Y++;
+      if ((key === 'a') && (pos_maxi_Y > 0)) pos_maxi_Y--;
+  }
+  }
+
+   //octavo botón (diam_mini)
+  if (mouseIsPressed && (mouseX >= x_octavo) && (mouseX <= (x_octavo+x_long_octavo)) && (mouseY >= y_octavo_def) && (mouseY <= (y_octavo_def+y_long_octavo))) boton_8_ON = true;
+  
+   
+  if (boton_8_ON) {
+    
+    boton_8_ON = botonera(x_octavo, x_long_octavo, y_octavo_def, y_long_octavo, diam_mini);
+    if (keyIsPressed === true) {
+      if ((key === 'q') && (diam_mini < 100)) diam_mini++;
+      if ((key === 'a') && (diam_mini > 0)) diam_mini--;
+  }
+  }
+  
+   //noveno botón (diam_maxi)
+  if (mouseIsPressed && (mouseX >= x_noveno) && (mouseX <= (x_noveno+x_long_noveno)) && (mouseY >= y_noveno_def) && (mouseY <= (y_noveno_def+y_long_noveno))) boton_9_ON = true;
+  
+   
+  if (boton_9_ON) {
+    
+    boton_9_ON = botonera(x_noveno, x_long_noveno, y_noveno_def, y_long_noveno, diam_maxi);
+    if (keyIsPressed === true) {
+      if ((key === 'q') && (diam_maxi < 100)) diam_maxi++;
+      if ((key === 'a') && (diam_maxi > 0)) diam_maxi--;
+  }
+  }
+
+  
+  
+  //Ejecución del programa en el lienzo derecho
+    
+  //Cálculos para simular el frameRate virtual (sólo entramos en ciertas iteraciones)
+  div_frameRate = int(60/virtual_frameRate)
+  if (iteraciones%div_frameRate == 0){
+   
+    //Sólo dibujamos si no nos hemos cargado ninguna línea fundamental
+    if (lineas_activadas[1] && lineas_activadas[2] && lineas_activadas[3] && lineas_activadas[6] && lineas_activadas[11] && lineas_activadas[13] && lineas_activadas[25]){
+      
+      //Limpiamos la pantalla si había señal de error
+      if (clean_error){
+        noStroke();
+        fill(255);
+        rect(width/2, 0, width/2, height);
+      } 
+      
+      //Elimina la imagen de fondo (background)
+      if(lineas_activadas[15]){
+          noStroke();
+          fill(255);
+          rect(width/2, 0, width/2, height);
+      }
+      
+      //Actualizamos variables si hemos eliminado algunas líneas de código
+      //Línea del lienzo mínimo (100x100)
+      if (lineas_activadas[8] == false){
+        virtual_width = 100;
+        virtual_height = 100;
+        stroke(0);
+        strokeWeight(3);
+        fill(255, 255, 255, 0);
+        rect(width/2, 0, virtual_width, virtual_height);
+      }
+      //Línea de frameRate
+      if (lineas_activadas[10] == false) virtual_frameRate = 60;
+      
+      if (lineas_activadas[18]) position_X = random(pos_mini_X, pos_maxi_X);
+      if (lineas_activadas[19]) position_Y = random(pos_mini_Y, pos_maxi_Y);
+      if (lineas_activadas[20]) diameter = random(diam_mini, diam_maxi);
+      if (lineas_activadas[22]) fill(random(0, 255), random(0, 255), random(0, 255), 100);
+      noStroke();
+      if (lineas_activadas[24]) circle(position_X+width/2, position_Y, diameter); 
+  
+      //Tamaño de la ventana virtual
+      noStroke();
+      fill(255);
+      rect(width/2+virtual_width, 0, width, height);
+      rect(width/2, virtual_height, width, height);
+      stroke(3);
+      fill(255, 255, 255, 0);
+      rect(width/2, 0, virtual_width, virtual_height);
+      if (virtual_width > valor_prev_width){//Si crece de tamaño el lienzo virtual en horizontal
+        stroke(255);
+        line(width/2+virtual_width-1, 0, width/2+virtual_width-1, virtual_height-1);  
+      }
+      if (virtual_height > valor_prev_height){//Si crece de tamaño el lienzo virtual en vertical
+        stroke(255);
+        line(width/2, virtual_height-1, width/2+virtual_width-1, virtual_height-1);  
+      }
+    }
+    
+    //Si hemos quitado alguna línea crítica (mensaje de error)
+    if (lineas_activadas[1] == false){
+      fill(255);
+      rect(width/2, 0, virtual_width, virtual_height);
+      fill(255,0,0);
+      text("Has eliminado una variable que se emplea en el programa", width/2+width/20, height/2);
+      text("ERROR: (position_X cannot be resolved to a variable)", width/2+width/20, height/2+30);
+      clean_error = true;
+    }
+    
+    if (lineas_activadas[2] == false){
+      fill(255);
+      rect(width/2, 0, virtual_width, virtual_height);
+      fill(255,0,0);
+      text("Has eliminado una variable que se emplea en el programa", width/2+width/20, height/2);
+      text("ERROR: (position_Y cannot be resolved to a variable)", width/2+width/20, height/2+30);
+      clean_error = true;
+    }
+    
+    if (lineas_activadas[3] == false){
+      fill(255);
+      rect(width/2, 0, virtual_width, virtual_height);
+      fill(255,0,0);
+      text("Has eliminado una variable que se emplea en el programa", width/2+width/20, height/2);
+      text("ERROR: (diameter cannot be resolved to a variable)", width/2+width/20, height/2+30);
+      clean_error = true;
+    }
+    
+    if (lineas_activadas[6] == false){
+      fill(255);
+      rect(width/2, 0, virtual_width, virtual_height);
+      fill(255,0,0);
+      text("Has eliminado la declaración del setup, te sobra el } del setup", width/2+width/20, height/2);
+      text("ERROR: unexpected token: '}'", width/2+width/20, height/2+30);
+      clean_error = true;
+    }
+    
+     if (lineas_activadas[11] == false){
+      fill(255);
+      rect(width/2, 0, virtual_width, virtual_height);
+      fill(255,0,0);
+      text("Has eliminado la llave que cierra el setup", width/2+width/20, height/2);
+      text("ERROR: Found a { that's missing a matching }", width/2+width/20, height/2+30);
+      clean_error = true;
+    }
+    
+    if (lineas_activadas[13] == false){
+      fill(255);
+      rect(width/2, 0, virtual_width, virtual_height);
+      fill(255,0,0);
+      text("Has eliminado la declaración de draw(), te sobra el } del draw", width/2+width/20, height/2);
+      text("ERROR: unexpected token: '}'", width/2+width/20, height/2+30);
+      clean_error = true;
+    }
+    
+    if (lineas_activadas[25] == false){
+      fill(255);
+      rect(width/2, 0, virtual_width, virtual_height);
+      fill(255,0,0);
+      text("Has eliminado la llave que cierra el draw", width/2+width/20, height/2);
+      text("ERROR: Found a { that's missing a matching }", width/2+width/20, height/2+30);
+      clean_error = true;
+    }
+    
+    if (lineas_activadas[1] && lineas_activadas[2] && lineas_activadas[3] && lineas_activadas[6] && lineas_activadas[11] && lineas_activadas[13] && lineas_activadas[25]) clean_error = false;
+  }
+  
+} 
+
+function incrementos() {
+  y_height += y_increment;
+  y_primero += y_increment;
+  y_segundo += y_increment;
+  y_tercero += y_increment;
+  num_line++;
+  y_cuarto += y_increment;
+  y_quinto += y_increment;
+  y_sexto += y_increment;
+  y_septimo += y_increment;
+  y_octavo += y_increment;
+  y_noveno += y_increment;
+  y_sq_1 += y_increment;
+  inc++;
+}
+
+function longitudes(valor){
+  
+  if (valor <= 9) return(9);
+  if ((valor > 9) && (valor <= 99)) return(18);
+  if (valor > 99) return(27);
+  
+}
+
+//valor_referencia es el valor de referencia (por ejemplo virtual_width)
+function botonera(x, x_long, y, y_long, valor_referencia) {
+  
+    stroke(0);
+    strokeWeight(2);
+    fill(242, 202, 250);
+    rect(x-1, y-1, x_long+2, y_long+2);
+    stroke(242, 202, 250, 0);
+    fill(0);
+    text(valor_referencia, x, y+14);
+  
+    if ((mouseIsPressed) && ((mouseX < x)|| (mouseX > (x+x_long)) || (mouseY < y) || (mouseY > (y+y_long)))) return(false);
+    else return(true);
+
+}
